@@ -5,8 +5,8 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Copy everything from client directory
-COPY client ./
+# Copy everything from client directory (note the trailing slash to copy contents)
+COPY client/. ./
 
 # Install dependencies
 RUN npm install
