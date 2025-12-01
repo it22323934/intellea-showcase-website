@@ -1,0 +1,70 @@
+# Node modules
+node_modules
+**/node_modules
+npm-debug.log
+package-lock.json
+
+# Build artifacts
+dist
+build
+.next
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.editorconfig
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Testing
+coverage
+.nyc_output
+**/__tests__
+**/*.test.js
+**/*.test.jsx
+**/*.spec.js
+cypress
+cypress.json
+
+# CI/CD
+.github
+.gitlab-ci.yml
+Jenkinsfile
+buildspec.yml
+ECS_DEPLOYMENT_GUIDE.md
+
+# Documentation
+README.md
+docs
+*.md
+
+# Environment files
+.env
+.env.*
+.env.local
+.env.development
+.env.production
+
+# Logs
+logs
+*.log
+
+# Temp files
+tmp
+temp
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose*.yml
