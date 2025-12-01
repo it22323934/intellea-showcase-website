@@ -5,14 +5,11 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files
-COPY client/package.json ./
+# Copy everything from client directory
+COPY client ./
 
 # Install dependencies
 RUN npm install
-
-# Copy application source
-COPY client/ ./
 
 # Build the application
 RUN npm run build
