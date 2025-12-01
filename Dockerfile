@@ -6,10 +6,10 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 # Copy package files
-COPY client/package*.json ./
+COPY client/package.json ./
 
 # Install dependencies
-RUN npm install --frozen-lockfile 2>/dev/null || npm install
+RUN npm install
 
 # Copy application source
 COPY client/ ./
