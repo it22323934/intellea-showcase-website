@@ -3,38 +3,33 @@ pipeline {
     
     environment {
         AWS_REGION = 'us-east-1'  // Change to your AWS region
-        ECR_REGISTRY = '<your-account-id>.dkr.ecr.us-east-1.amazonaws.com'  // Replace with your ECR registry URL
+        ECR_REGISTRY = '322736531412.dkr.ecr.us-east-1.amazonaws.com'  // Replace with your ECR registry URL
         ECR_REPOSITORY = 'intellea-showcase'
-        ECS_CLUSTER = 'intellea-cluster'  // Replace with your ECS cluster name
-        ECS_SERVICE = 'intellea-service'  // Replace with your ECS service name
-        ECS_TASK_DEFINITION = 'intellea-task'  // Replace with your task definition family name
+        ECS_CLUSTER = 'intellea-showcase-website'  // Replace with your ECS cluster name
+        ECS_SERVICE = 'intellea-showcase-task-service-2cb0s57h'  // Replace with your ECS service name
+        ECS_TASK_DEFINITION = 'intellea-showcase-task'  // Replace with your task definition family name
         IMAGE_TAG = "${env.BUILD_NUMBER}"
         AWS_CREDENTIALS_ID = 'aws-credentials'  // Jenkins credential ID for AWS
     }
     
     stages {
-        stage('Checkout') {
+        stage('Checkout Code') {
             steps {
-                checkout scm
-            }
-        }
-        
-        stage('Run Tests') {
-            steps {
-                script {
-                    echo 'Running tests...'
-                    dir('client') {
-                        sh 'npm ci'
-                        sh 'npm run lint || true'  // Run linting, continue even if it fails
-                    }
-                }
+                echo 'Checking out code from GitHub...'
+                git branch: 'master',
+                    credentialsId: 'github-access-credentials',
+                    url: 'https://github.com/it22323934/intellea-showcase-website.git'
             }
         }
         
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("${ECR_REPOSITORY}:${IMAGE_TAG}")
+                    echo "Building Docker image: ${ECR_REPOSITORY}:${IMAGE_TAG}"
+                    sh """
+                        docker build -t ${ECR_REPOSITORY}:${IMAGE_TAG} .
+                        docker tag ${ECR_REPOSITORY}:${IMAGE_TAG} ${ECR_REPOSITORY}:latest
+                    """
                 }
             }
         }
@@ -126,7 +121,6 @@ pipeline {
         }
         failure {
             echo 'Pipeline failed!'
-            // Send notification (configure based on your needs)
         }
         always {
             // Clean up Docker images to save space
